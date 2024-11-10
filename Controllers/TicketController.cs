@@ -27,19 +27,19 @@ namespace GlaTicket.Controllers
         public void Post([FromBody] Ticket t)
         {
             // בדיקה אם האירוע קיים ברשימת האירועים
-            var existingEvent = EventController.EventList.FirstOrDefault(c => c.EventCode == t.EventCode);
+            var existingEvent = Data.EventList.FirstOrDefault(c => c.EventCode == t.EventCode);
             if (existingEvent == null)
                 return; // אם האירוע לא קיים, יוצאים מהפונקציה
 
             // בדיקה אם הלקוח קיים ברשימת הלקוחות
-            var client = ClientController.clientList.FirstOrDefault(c => c.ClientId == t.ClientId);
+            var client = Data.clientList.FirstOrDefault(c => c.ClientId == t.ClientId);
             if (client != null)
             {
                 client.ClientTicketList.Add(t.EventCode);
             }
             else
             {
-                ClientController.clientList.Add(new Client
+                Data.clientList.Add(new Client
                 {
                     ClientId = t.ClientId,
                     ClientName = t.ClientName,
@@ -60,4 +60,5 @@ namespace GlaTicket.Controllers
             //{
             //}
         }
+    }
 }

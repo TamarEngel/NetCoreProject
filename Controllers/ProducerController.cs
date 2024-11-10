@@ -9,19 +9,18 @@ namespace GlaTicket.Controllers
     [ApiController]
     public class ProducerController : ControllerBase
     {
-        static public List<Producer> ProducerList = new List<Producer>();
         // GET: api/<ProducerController>
         [HttpGet]
         public ActionResult<IEnumerable<Producer>> Get()
         {
-            return Ok(ProducerList);
+            return Ok(Data.ProducerList);
         }
 
         // GET api/<ProducerController>/5
         [HttpGet("{id}")]
         public ActionResult<Producer> Get(int id)
         {
-            var producer = ProducerList.FirstOrDefault(p => p.ProducerId == id && p.ProducerStatus == true);
+            var producer = Data.ProducerList.FirstOrDefault(p => p.ProducerId == id && p.ProducerStatus == true);
             if (producer == null)
             {
                 return NotFound($"Producer with ID {id} not found or inactive.");
@@ -33,7 +32,7 @@ namespace GlaTicket.Controllers
         [HttpPost]
         public void Post(int producerId,string producerName)
         {
-            ProducerList.Add(new Producer() {ProducerId=producerId,ProducerName=producerName,ProducerStatus=true,ProducerEventList=new List<int>() });
+            Data.ProducerList.Add(new Producer() {ProducerId=producerId,ProducerName=producerName,ProducerStatus=true,ProducerEventList=new List<int>() });
         }
 
         // PUT api/<ProducerController>/5
@@ -47,7 +46,7 @@ namespace GlaTicket.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            var producer = ProducerList.FirstOrDefault(p => p.ProducerId == id);
+            var producer = Data.ProducerList.FirstOrDefault(p => p.ProducerId == id);
             if (producer == null)
             {
                 return NotFound($"Producer with ID {id} not found.");

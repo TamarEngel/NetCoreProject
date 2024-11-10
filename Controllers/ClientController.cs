@@ -8,19 +8,19 @@ namespace GlaTicket.Controllers
     [ApiController]
     public class ClientController : ControllerBase
     {
-        static public List<Client> clientList=new List<Client>();
+        
         // GET: api/<ClientController>
         [HttpGet]
         public ActionResult <IEnumerable<Client>> Get()
         {
-            return Ok(clientList);
+            return Ok(Data.clientList);
         }
 
         // GET api/<ClientController>/5
         [HttpGet("{id}")]
         public ActionResult<Client> Get(int id)
         {
-            var client = clientList.FirstOrDefault(c => c.ClientId == id && c.ClientStatus == true);
+            var client = Data.clientList.FirstOrDefault(c => c.ClientId == id && c.ClientStatus == true);
             if (client == null)
             {
                 return NotFound($"Client with ID {id} not found or inactive.");
@@ -48,7 +48,7 @@ namespace GlaTicket.Controllers
         public ActionResult Put(int id,int eventCode)
         {
             //אפשרות לבטל הזמנה
-            var client = clientList.FirstOrDefault(c => c.ClientId == id);
+            var client = Data.clientList.FirstOrDefault(c => c.ClientId == id);
             if (client == null)
             {
                 return NotFound($"Client with ID {id} not found.");
@@ -66,7 +66,7 @@ namespace GlaTicket.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            var client = clientList.FirstOrDefault(c => c.ClientId == id);
+            var client = Data.clientList.FirstOrDefault(c => c.ClientId == id);
             if (client == null)
             {
                 return NotFound($"Client with ID {id} not found.");

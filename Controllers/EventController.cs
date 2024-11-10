@@ -8,19 +8,18 @@ namespace GlaTicket.Controllers
     [ApiController]
     public class EventController : ControllerBase
     {
-        static public List<Event> EventList = new List<Event>();
         // GET: api/<EventController>
         [HttpGet]
         public ActionResult<IEnumerable<Event>> Get()
         {
-            return Ok(EventList);
+            return Ok(Data.EventList);
         }
 
         // GET api/<EventController>/5
         [HttpGet("{id}")]
         public ActionResult<Event> Get(int id)
         {
-            var eventItem = EventList.FirstOrDefault(e => e.EventCode == id && e.EventStatus == true);
+            var eventItem = Data.EventList.FirstOrDefault(e => e.EventCode == id && e.EventStatus == true);
             if (eventItem == null)
             {
                 return NotFound($"Event with ID {id} not found or inactive.");
@@ -38,13 +37,13 @@ namespace GlaTicket.Controllers
             }
 
             // בדיקה אם המפיק קיים
-            var producer = ProducerController.ProducerList.FirstOrDefault(p => p.ProducerId == e.EventProducerId);
+            var producer = Data.ProducerList.FirstOrDefault(p => p.ProducerId == e.EventProducerId);
             if (producer == null)
             {
                 return NotFound($"Producer with ID {e.EventProducerId} not found.");
             }
 
-            EventList.Add(e);
+            Data.EventList.Add(e);
             producer.ProducerEventList.Add(e.EventCode);
             return Ok($"Add {e} successfully.");
         }
@@ -53,7 +52,7 @@ namespace GlaTicket.Controllers
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] Event e)
         {
-            var eventItem = EventList.FirstOrDefault(ev => ev.EventCode == id);
+            var eventItem = Data.EventList.FirstOrDefault(ev => ev.EventCode == id);
             if (eventItem == null)
             {
                 return NotFound($"Event with ID {id} not found.");
@@ -69,7 +68,7 @@ namespace GlaTicket.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            var eventItem = EventList.FirstOrDefault(e => e.EventCode == id);
+            var eventItem = Data.EventList.FirstOrDefault(e => e.EventCode == id);
             if (eventItem == null)
             {
                 return NotFound($"Event with ID {id} not found.");
@@ -77,8 +76,8 @@ namespace GlaTicket.Controllers
 
             eventItem.EventStatus = false;
             return Ok($"Event with ID {id} is now inactive .");
-            //ProducerController.ProducerList.FirstOrDefault(p => p.ProducerEventList.Contains(id)).ProducerEventList.Remove(id);
-            //ClientController.clientList.FirstOrDefault(p => p.ClientTicketList.Contains(id)).ClientTicketList.Remove(id);
+            //Data.ProducerList.FirstOrDefault(p => p.ProducerEventList.Contains(id)).ProducerEventList.Remove(id);
+            //Data.clientList.FirstOrDefault(p => p.ClientTicketList.Contains(id)).ClientTicketList.Remove(id);
         }
     }
 }
