@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GlaTicketCore.classes;
+using GlaTicketCore.interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,6 +10,11 @@ namespace GlaTicket.Controllers
     [ApiController]
     public class TicketController : ControllerBase
     {
+        static IDataContext _datacontext;
+        public TicketController(IDataContext datacontext)
+        {
+            _datacontext = datacontext;
+        }
         // GET: api/<TicketController>
         //[HttpGet]
         //public IEnumerable<string> Get()
@@ -27,19 +34,19 @@ namespace GlaTicket.Controllers
         public void Post([FromBody] Ticket t)
         {
             // בדיקה אם האירוע קיים ברשימת האירועים
-            var existingEvent = Data.EventList.FirstOrDefault(c => c.EventCode == t.EventCode);
+            var existingEvent = _datacontext.EventList.FirstOrDefault(c => c.EventCode == t.EventCode);
             if (existingEvent == null)
                 return; // אם האירוע לא קיים, יוצאים מהפונקציה
 
             // בדיקה אם הלקוח קיים ברשימת הלקוחות
-            var client = Data.clientList.FirstOrDefault(c => c.ClientId == t.ClientId);
+            var client = _datacontext.clientList.FirstOrDefault(c => c.ClientId == t.ClientId);
             if (client != null)
             {
                 client.ClientTicketList.Add(t.EventCode);
             }
             else
             {
-                Data.clientList.Add(new Client
+                _datacontext.clientList.Add(new Client
                 {
                     ClientId = t.ClientId,
                     ClientName = t.ClientName,

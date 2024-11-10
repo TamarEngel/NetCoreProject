@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GlaTicketCore.classes;
+using GlaTicketCore.interfaces;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,18 +11,23 @@ namespace GlaTicket.Controllers
     [ApiController]
     public class ProducerController : ControllerBase
     {
+        static IDataContext _datacontext;
+        public ProducerController(IDataContext datacontext)
+        {
+            _datacontext = datacontext;
+        }
         // GET: api/<ProducerController>
         [HttpGet]
         public ActionResult<IEnumerable<Producer>> Get()
         {
-            return Ok(Data.ProducerList);
+            return Ok(_datacontext.ProducerList);
         }
 
         // GET api/<ProducerController>/5
         [HttpGet("{id}")]
         public ActionResult<Producer> Get(int id)
         {
-            var producer = Data.ProducerList.FirstOrDefault(p => p.ProducerId == id && p.ProducerStatus == true);
+            var producer = _datacontext.ProducerList.FirstOrDefault(p => p.ProducerId == id && p.ProducerStatus == true);
             if (producer == null)
             {
                 return NotFound($"Producer with ID {id} not found or inactive.");
@@ -32,7 +39,7 @@ namespace GlaTicket.Controllers
         [HttpPost]
         public void Post(int producerId,string producerName)
         {
-            Data.ProducerList.Add(new Producer() {ProducerId=producerId,ProducerName=producerName,ProducerStatus=true,ProducerEventList=new List<int>() });
+            _datacontext.ProducerList.Add(new Producer() {ProducerId=producerId,ProducerName=producerName,ProducerStatus=true,ProducerEventList=new List<int>() });
         }
 
         // PUT api/<ProducerController>/5
@@ -46,7 +53,7 @@ namespace GlaTicket.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            var producer = Data.ProducerList.FirstOrDefault(p => p.ProducerId == id);
+            var producer = _datacontext.ProducerList.FirstOrDefault(p => p.ProducerId == id);
             if (producer == null)
             {
                 return NotFound($"Producer with ID {id} not found.");

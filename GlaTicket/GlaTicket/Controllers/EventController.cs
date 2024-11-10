@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GlaTicketCore.classes;
+using GlaTicketCore.interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,18 +10,23 @@ namespace GlaTicket.Controllers
     [ApiController]
     public class EventController : ControllerBase
     {
+        static IDataContext _datacontext;
+        public EventController(IDataContext datacontext)
+        {
+            _datacontext = datacontext;
+        }
         // GET: api/<EventController>
         [HttpGet]
         public ActionResult<IEnumerable<Event>> Get()
         {
-            return Ok(Data.EventList);
+            return Ok(_datacontext.EventList);
         }
 
         // GET api/<EventController>/5
         [HttpGet("{id}")]
         public ActionResult<Event> Get(int id)
         {
-            var eventItem = Data.EventList.FirstOrDefault(e => e.EventCode == id && e.EventStatus == true);
+            var eventItem = _datacontext.EventList.FirstOrDefault(e => e.EventCode == id && e.EventStatus == true);
             if (eventItem == null)
             {
                 return NotFound($"Event with ID {id} not found or inactive.");
@@ -37,13 +44,13 @@ namespace GlaTicket.Controllers
             }
 
             // בדיקה אם המפיק קיים
-            var producer = Data.ProducerList.FirstOrDefault(p => p.ProducerId == e.EventProducerId);
+            var producer = _datacontext.ProducerList.FirstOrDefault(p => p.ProducerId == e.EventProducerId);
             if (producer == null)
             {
                 return NotFound($"Producer with ID {e.EventProducerId} not found.");
             }
 
-            Data.EventList.Add(e);
+            _datacontext.EventList.Add(e);
             producer.ProducerEventList.Add(e.EventCode);
             return Ok($"Add {e} successfully.");
         }
@@ -52,7 +59,7 @@ namespace GlaTicket.Controllers
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] Event e)
         {
-            var eventItem = Data.EventList.FirstOrDefault(ev => ev.EventCode == id);
+            var eventItem = _datacontext.EventList.FirstOrDefault(ev => ev.EventCode == id);
             if (eventItem == null)
             {
                 return NotFound($"Event with ID {id} not found.");
@@ -68,7 +75,7 @@ namespace GlaTicket.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            var eventItem = Data.EventList.FirstOrDefault(e => e.EventCode == id);
+            var eventItem = _datacontext.EventList.FirstOrDefault(e => e.EventCode == id);
             if (eventItem == null)
             {
                 return NotFound($"Event with ID {id} not found.");

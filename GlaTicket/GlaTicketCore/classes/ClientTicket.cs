@@ -1,4 +1,4 @@
-﻿namespace GlaTicket
+﻿namespace GlaTicketCore.classes
 {
     public class ClientTicket
     {

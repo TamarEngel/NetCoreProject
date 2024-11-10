@@ -1,6 +1,4 @@
-﻿using GlaTicket.Controllers;
-
-namespace GlaTicket
+﻿namespace GlaTicketCore.classes
 {
     public class Event
     {
@@ -10,6 +8,15 @@ namespace GlaTicket
         public int EventPrice { get; set; }
         public bool EventStatus { get; set; }
         public int EventProducerId { get; set; }
+
+        public Event(int id,string name,int price,bool status,int pid)
+        {
+            this.EventName = name;
+            this.EventCode = id;
+            this.EventPrice = price;
+            this.EventStatus = status;
+            this.EventProducerId = pid;
+        }
 
     }
 }
