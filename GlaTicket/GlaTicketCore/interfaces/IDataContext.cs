@@ -1,11 +1,11 @@
-﻿using GlaTicketCore.classes;
+﻿using GlaTicket.Core.models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GlaTicketCore.interfaces
+namespace GlaTicket.Core.interfaces
 {
     public interface IDataContext
     {

@@ -1,6 +1,8 @@
-﻿using GlaTicketCore.interfaces;
+﻿
+using GlaTicket.Core.interfaces;
+using GlaTicket.Core.models;
 
-namespace GlaTicketCore.classes
+namespace GlaTicket.Data
 {
     public class DataContext:IDataContext
     {

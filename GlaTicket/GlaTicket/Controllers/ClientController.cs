@@ -1,32 +1,33 @@
-﻿using GlaTicketCore.classes;
-using GlaTicketCore.interfaces;
+﻿using GlaTicket.Core.Services;
+using GlaTicket.Core.models;
+using GlaTicket.Core.interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace GlaTicket.Controllers
+namespace GlaTicket.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ClientController : ControllerBase
     {
-        static IDataContext _datacontext;
-        public ClientController(IDataContext datacontext)
+        private readonly IClientService _clientService;
+        public ClientController(IClientService datacontext)
         {
-            _datacontext = datacontext;
+            _clientService = datacontext;
         }
         // GET: api/<ClientController>
         [HttpGet]
         public ActionResult <IEnumerable<Client>> Get()
         {
-            return Ok(_datacontext.clientList);
+            return Ok(_clientService.GetList());
         }
 
         // GET api/<ClientController>/5
         [HttpGet("{id}")]
         public ActionResult<Client> Get(int id)
         {
-            var client = _datacontext.clientList.FirstOrDefault(c => c.ClientId == id && c.ClientStatus == true);
+            var client =_clientService.GetClientById(id);
             if (client == null)
             {
                 return NotFound($"Client with ID {id} not found or inactive.");
@@ -54,31 +55,25 @@ namespace GlaTicket.Controllers
         public ActionResult Put(int id,int eventCode)
         {
             //אפשרות לבטל הזמנה
-            var client = _datacontext.clientList.FirstOrDefault(c => c.ClientId == id);
-            if (client == null)
-            {
+            var success = _clientService.ChangeClient(id, eventCode);
+            if (success == -1)
                 return NotFound($"Client with ID {id} not found.");
-            }
-
-            if (client.ClientTicketList.Contains(eventCode))
+            else if (success == 0)
             {
-                client.ClientTicketList.Remove(eventCode);
-                return Ok($"Event code {eventCode} removed from client {id} ticket list.");
+                return BadRequest($"Event code {eventCode} not found in client {id} ticket list.");
             }
-            return BadRequest($"Event code {eventCode} not found in client {id} ticket list.");
+            return Ok($"Event code {eventCode} removed from client {id} ticket list.");
         }
 
         // DELETE api/<ClientController>/5
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            var client = _datacontext.clientList.FirstOrDefault(c => c.ClientId == id);
-            if (client == null)
+            var success = _clientService.DeleteClient(id);
+            if (success == -1)
             {
                 return NotFound($"Client with ID {id} not found.");
             }
-
-            client.ClientStatus = false;
             return Ok($"Client {id} status set to inactive.");
         }
     }

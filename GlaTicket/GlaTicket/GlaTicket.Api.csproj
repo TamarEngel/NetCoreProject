@@ -11,7 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GlaTicketCore\GlaTicketCore.csproj" />
+    <ProjectReference Include="..\GlaTicket.Data\GlaTicket.Data.csproj" />
+    <ProjectReference Include="..\GlaTicket.Service\GlaTicket.Service.csproj" />
+    <ProjectReference Include="..\GlaTicketCore\GlaTicket.Core.csproj" />
   </ItemGroup>
 
 </Project>

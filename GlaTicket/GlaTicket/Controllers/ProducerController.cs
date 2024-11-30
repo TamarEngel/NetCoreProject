@@ -1,33 +1,34 @@
-﻿using GlaTicketCore.classes;
-using GlaTicketCore.interfaces;
+﻿using GlaTicket.Core.models;
+using GlaTicket.Core.interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using GlaTicket.Core.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace GlaTicket.Controllers
+namespace GlaTicket.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ProducerController : ControllerBase
     {
-        static IDataContext _datacontext;
-        public ProducerController(IDataContext datacontext)
+        private readonly IProducerService _producerService;
+        public ProducerController(IProducerService datacontext)
         {
-            _datacontext = datacontext;
+            _producerService = datacontext;
         }
         // GET: api/<ProducerController>
         [HttpGet]
         public ActionResult<IEnumerable<Producer>> Get()
         {
-            return Ok(_datacontext.ProducerList);
+            return Ok(_producerService.GetList());
         }
 
         // GET api/<ProducerController>/5
         [HttpGet("{id}")]
         public ActionResult<Producer> Get(int id)
         {
-            var producer = _datacontext.ProducerList.FirstOrDefault(p => p.ProducerId == id && p.ProducerStatus == true);
+            var producer = _producerService.GetProducerById(id);    
             if (producer == null)
             {
                 return NotFound($"Producer with ID {id} not found or inactive.");
@@ -39,7 +40,7 @@ namespace GlaTicket.Controllers
         [HttpPost]
         public void Post(int producerId,string producerName)
         {
-            _datacontext.ProducerList.Add(new Producer() {ProducerId=producerId,ProducerName=producerName,ProducerStatus=true,ProducerEventList=new List<int>() });
+            _producerService.AddProducer(producerId, producerName);
         }
 
         // PUT api/<ProducerController>/5
@@ -53,13 +54,11 @@ namespace GlaTicket.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            var producer = _datacontext.ProducerList.FirstOrDefault(p => p.ProducerId == id);
+            var producer = _producerService.DeleteProducer(id);
             if (producer == null)
             {
                 return NotFound($"Producer with ID {id} not found.");
             }
-
-            producer.ProducerStatus = false;
             return Ok($"Producer with ID {id} is now inactive.");
         }
     }

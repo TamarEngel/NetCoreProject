@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -17,7 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GlaTicket\GlaTicket.csproj" />
+    <ProjectReference Include="..\GlaTicketCore\GlaTicket.Core.csproj" />
+    <ProjectReference Include="..\GlaTicket\GlaTicket.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>

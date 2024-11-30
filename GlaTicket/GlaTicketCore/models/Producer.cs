@@ -1,4 +1,4 @@
-﻿namespace GlaTicketCore.classes
+﻿namespace GlaTicket.Core.models
 {
     public class Producer
     {

@@ -1,5 +1,5 @@
 using GlaTicket.Controllers;
-using GlaTicketCore.classes;
+using GlaTicket.Core.models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,0 +1,43 @@
+﻿using GlaTicket.Core.interfaces;
+using GlaTicket.Core.models;
+using GlaTicket.Core.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GlaTicket.Data.Repositories
+{
+    public class ProducerRepository:IProducerRepository
+    {
+        private readonly DataContext _context;
+        public ProducerRepository(DataContext context)
+        {
+            _context = context;
+        }
+        public List<Producer> GetList()
+        {
+            return _context.ProducerList;
+        }
+        public Producer GetProducerById(int id)
+        {
+            return _context.ProducerList.FirstOrDefault(p => p.ProducerId == id && p.ProducerStatus == true);
+        }
+        public void AddProducer(int producerId, string producerName)
+        {
+            _context.ProducerList.Add(new Producer() { ProducerId = producerId, ProducerName = producerName, ProducerStatus = true, ProducerEventList = new List<int>() });
+        }
+        public int DeleteProducer(int id)
+        {
+            var producerItem = _context.ProducerList.FirstOrDefault(e => e.ProducerId == id);
+            if (producerItem == null)
+            {
+                return -1;
+            }
+            producerItem.ProducerStatus = false;
+            return 1;
+        }
+
+    }
+}
