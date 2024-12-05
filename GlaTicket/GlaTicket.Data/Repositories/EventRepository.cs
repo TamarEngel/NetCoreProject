@@ -19,7 +19,7 @@ namespace GlaTicket.Data.Repositories
 
         public List<Event> GetList()
         {
-            return _context.EventList;
+            return _context.EventList.ToList();
         }
         public Event GetEventById(int id)
         {
@@ -32,6 +32,7 @@ namespace GlaTicket.Data.Repositories
                 return -1;
             _context.EventList.Add(e);
             producer.ProducerEventList.Add(e.EventCode);
+            _context.SaveChanges();
             return 1;
         }
         public int ChangeEvent(int id,Event e)
@@ -41,6 +42,7 @@ namespace GlaTicket.Data.Repositories
                 return -1;
             eventItem.EventPrice = e.EventPrice;
             eventItem.EventDate = e.EventDate;
+            _context.SaveChanges();
             return 1;
         }
         public int DeleteEvent(int id)
@@ -51,6 +53,7 @@ namespace GlaTicket.Data.Repositories
                 return -1;
             }
             eventItem.EventStatus = false;
+            _context.SaveChanges();
             return 1;
             //_context.ProducerList.FirstOrDefault(p => p.ProducerEventList.Contains(id)).ProducerEventList.Remove(id);
             //_context.clientList.FirstOrDefault(p => p.ClientTicketList.Contains(id)).ClientTicketList.Remove(id);

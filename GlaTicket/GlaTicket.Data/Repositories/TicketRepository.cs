@@ -16,6 +16,10 @@ namespace GlaTicket.Data.Repositories
         {
             _context = context;
         }
+        public List<Ticket> GetList()
+        {
+            return _context.TicketList.ToList();
+        }
         public void AddTicketAndClient(Ticket t)
         {
             // בדיקה אם האירוע קיים ברשימת האירועים
@@ -39,6 +43,8 @@ namespace GlaTicket.Data.Repositories
                     ClientTicketList = new List<int> { t.EventCode }
                 });
             }
+            _context.TicketList.Add(t);
+            _context.SaveChanges();
         }
     }
 }

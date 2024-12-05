@@ -10,5 +10,6 @@ namespace GlaTicket.Core.Repositories
     public interface ITicketRepository
     {
         void AddTicketAndClient(Ticket t);
+        public List<Ticket> GetList();
     }
 }

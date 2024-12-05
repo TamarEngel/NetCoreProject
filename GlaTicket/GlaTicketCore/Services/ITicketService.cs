@@ -10,5 +10,7 @@ namespace GlaTicket.Core.Services
     public interface ITicketService
     {
         void AddTicketAndClient(Ticket t);
+        public List<Ticket> GetList();
+
     }
 }

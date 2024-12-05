@@ -1,4 +1,5 @@
 ﻿using GlaTicket.Core.models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace GlaTicket.Core.interfaces
 {
     public interface IDataContext
     {
-        public  List<Event> EventList { get; set; }
-        public  List<Producer> ProducerList { get; set; }
-        public  List<Client> clientList { get; set; }
+        public DbSet<Event> EventList { get; set; }
+        public DbSet<Producer> ProducerList { get; set; }
+        public DbSet<Client> clientList { get; set; }
     }
 }

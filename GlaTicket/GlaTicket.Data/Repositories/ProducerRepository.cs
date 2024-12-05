@@ -18,7 +18,7 @@ namespace GlaTicket.Data.Repositories
         }
         public List<Producer> GetList()
         {
-            return _context.ProducerList;
+            return _context.ProducerList.ToList();
         }
         public Producer GetProducerById(int id)
         {
@@ -27,6 +27,7 @@ namespace GlaTicket.Data.Repositories
         public void AddProducer(int producerId, string producerName)
         {
             _context.ProducerList.Add(new Producer() { ProducerId = producerId, ProducerName = producerName, ProducerStatus = true, ProducerEventList = new List<int>() });
+            _context.SaveChanges();
         }
         public int DeleteProducer(int id)
         {
@@ -36,6 +37,7 @@ namespace GlaTicket.Data.Repositories
                 return -1;
             }
             producerItem.ProducerStatus = false;
+            _context.SaveChanges();
             return 1;
         }
 

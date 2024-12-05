@@ -20,5 +20,9 @@ namespace GlaTicket.Service
         {
             _ticketRepository.AddTicketAndClient(t);
         }
+        public List<Ticket> GetList()
+        {
+            return _ticketRepository.GetList();
+        }
     }
 }

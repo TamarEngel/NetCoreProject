@@ -19,7 +19,7 @@ namespace GlaTicket.Data.Repositories
         }
         public List<Client> GetList()
         {
-            return _context.clientList;
+            return _context.clientList.ToList();
         }
         public Client GetClientById(int id)
         {
@@ -34,6 +34,7 @@ namespace GlaTicket.Data.Repositories
             if (client.ClientTicketList.Contains(eventCode))
             {
                 client.ClientTicketList.Remove(eventCode);
+                _context.SaveChanges();
                 return 1;
             }
             return 0;
@@ -44,6 +45,7 @@ namespace GlaTicket.Data.Repositories
             if (client == null)
                 return -1;
             client.ClientStatus = false;
+            _context.SaveChanges();
             return 1;
         }
     }
