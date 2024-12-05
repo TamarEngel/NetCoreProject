@@ -35,23 +35,21 @@ namespace GlaTicket.Api.Controllers
             return Ok(client);
         }
 
-        //ההכנסה מתבצעת בהזמנת כרטיס
+
         // POST api/<ClientController>
-        //[HttpPost]
-        //public ActionResult Post([FromBody] Client newClient)
-        //{
-        //    if (newClient == null || clientList.Any(c => c.ClientId == newClient.ClientId))
-        //    {
-        //        return BadRequest("Invalid client data or client already exists.");
-        //    }
+        [HttpPost]
+        public ActionResult Post(int id, string name)
+        {
+            if (_clientService.AddClient(id,name) ==-1)
+            {
+                return BadRequest("Invalid client data or client already exists.");
+            }
+            return Ok($"Add client successfully.");
+        }
+    
 
-        //    clientList.Add(newClient);
-        //    return CreatedAtAction(nameof(Get), new { id = newClient.ClientId }, newClient);
-        //}
-        //}
-
-        // PUT api/<ClientController>/53
-        [HttpPut("{id}")]
+    // PUT api/<ClientController>/53
+    [HttpPut("{id}")]
         public ActionResult Put(int id,int eventCode)
         {
             //אפשרות לבטל הזמנה

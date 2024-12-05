@@ -11,6 +11,7 @@ namespace GlaTicket.Core.Services
     {
         List<Client> GetList();
         Client GetClientById(int id);
+        int AddClient(int id, string name);
         int ChangeClient(int id, int eventCode);
         int DeleteClient(int id);
     }

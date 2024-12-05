@@ -4,6 +4,7 @@ using GlaTicket.Core.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,9 +26,18 @@ namespace GlaTicket.Data.Repositories
         {
             return _context.clientList.FirstOrDefault(c => c.ClientId == id && c.ClientStatus == true);
         }
+        public int AddClient(int id, string name)
+        {
+            if (_context.clientList.Any(c => c.ClientId ==id))
+                return -1;
+            _context.clientList.Add(new Client() { ClientId = id, ClientName = name, ClientTicketList = new List<int>(), ClientStatus = true });
+            _context.SaveChanges();
+            return 1;
+        }
+
         public int ChangeClient(int id,int eventCode)
         {
-            //אפשרות לבטל הזמנה
+            //אפשרות לבטל הזמנה/כרטיס
             var client = _context.clientList.FirstOrDefault(c => c.ClientId == id);
             if (client == null)
                 return -1;

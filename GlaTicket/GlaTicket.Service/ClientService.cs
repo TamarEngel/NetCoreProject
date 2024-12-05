@@ -24,6 +24,10 @@ namespace GlaTicket.Service
         {
             return _clientRepository.GetClientById(id);
         }
+        public int AddClient(int id, string name)
+        {
+            return _clientRepository.AddClient(id,name);
+        }
         public int ChangeClient(int id, int eventCode)
         {
             return _clientRepository.ChangeClient(id, eventCode);
