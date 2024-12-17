@@ -10,8 +10,9 @@ namespace GlaTicket.Core.models
         public int ProducerId { get; set; }
         public string ProducerName { get; set; }
         public bool ProducerStatus { get; set; }
-
-        [NotMapped]
-        public List<int> ProducerEventList { get; set; }
+        public List<Event> ProducerEventList { get; set; } = new List<Event>();
     }
 }
+
+
+

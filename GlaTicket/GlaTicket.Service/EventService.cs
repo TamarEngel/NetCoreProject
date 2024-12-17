@@ -28,9 +28,9 @@ namespace GlaTicket.Service
         {
             return _eventRepository.AddEvent(e);
         }
-        public int ChangeEvent(int id, Event e)
+        public int ChangeEvent(int id, int EventPrice, DateTime EventDate)
         {
-            return (_eventRepository.ChangeEvent(id, e));   
+            return (_eventRepository.ChangeEvent(id, EventPrice, EventDate));   
         }
         public int DeleteEvent(int id)
         {

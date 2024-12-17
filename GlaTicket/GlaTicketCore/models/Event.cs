@@ -11,17 +11,20 @@ namespace GlaTicket.Core.models
         public DateTime EventDate { get; set; }
         public int EventPrice { get; set; }
         public bool EventStatus { get; set; }
-        public int EventProducerId { get; set; }
+        public int ProducerId { get; set; }
+        //public Producer EventProducer { get; set; }
+        public List<Ticket> EventTicketList { get; set; } = new List<Ticket>();
 
-        //public Event(int id,string name, DateTime eventDate, int price,bool status,int pid)
+        //public Event(int Code, string Name, DateTime EventDate, int EventPrice, int EventProducerId)
         //{
-        //    this.EventName = name;
-        //    this.EventCode = id;
-        //    this.EventDate = eventDate;
-        //    this.EventPrice = price;
-        //    this.EventStatus = status;
-        //    this.EventProducerId = pid;
+        //    EventCode= Code;
+        //    EventName= Name;
+        //    this.EventPrice = EventPrice;
+        //    this.EventProducerId = EventProducerId;
+        //    this.EventStatus = true;
+        //    this.EventDate = EventDate;
         //}
+        
 
     }
 }

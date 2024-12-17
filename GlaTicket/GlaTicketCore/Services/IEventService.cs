@@ -12,7 +12,7 @@ namespace GlaTicket.Core.Services
         List<Event> GetAll();
         Event GetEventById(int id);
         int AddEvent(Event e);
-        int ChangeEvent(int id,Event e);
+        int ChangeEvent(int id, int EventPrice, DateTime EventDate);
         int DeleteEvent(int id);
 
 

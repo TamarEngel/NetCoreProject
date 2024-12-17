@@ -26,7 +26,7 @@ namespace GlaTicket.Data.Repositories
         }
         public void AddProducer(int producerId, string producerName)
         {
-            _context.ProducerList.Add(new Producer() { ProducerId = producerId, ProducerName = producerName, ProducerStatus = true, ProducerEventList = new List<int>() });
+            _context.ProducerList.Add(new Producer() { ProducerId = producerId, ProducerName = producerName, ProducerStatus = true, ProducerEventList = new List<Event>() });
             _context.SaveChanges();
         }
         public int DeleteProducer(int id)

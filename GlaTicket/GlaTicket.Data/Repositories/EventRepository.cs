@@ -1,6 +1,8 @@
 ﻿using GlaTicket.Core.interfaces;
 using GlaTicket.Core.models;
 using GlaTicket.Core.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,21 +29,23 @@ namespace GlaTicket.Data.Repositories
         }
         public int AddEvent(Event e)
         {
-            var producer = _context.ProducerList.FirstOrDefault(p => p.ProducerId == e.EventProducerId);
+            //var producer = _context.ProducerList.FirstOrDefault(p => p.ProducerId == e.EventProducerId);
+            var producer = _context.ProducerList.Include(p => p.ProducerEventList).FirstOrDefault(p => p.ProducerId == e.ProducerId);
+
             if (producer == null)
                 return -1;
             _context.EventList.Add(e);
-            producer.ProducerEventList.Add(e.EventCode);
+            producer.ProducerEventList.Add(e);
             _context.SaveChanges();
             return 1;
         }
-        public int ChangeEvent(int id,Event e)
+        public int ChangeEvent(int id,int EventPrice, DateTime EventDate)
         {
             var eventItem = _context.EventList.FirstOrDefault(ev => ev.EventCode == id);
             if (eventItem == null)
                 return -1;
-            eventItem.EventPrice = e.EventPrice;
-            eventItem.EventDate = e.EventDate;
+            eventItem.EventPrice = EventPrice;
+            eventItem.EventDate = EventDate;
             _context.SaveChanges();
             return 1;
         }

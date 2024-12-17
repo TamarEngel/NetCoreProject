@@ -38,8 +38,9 @@ namespace GlaTicket.Api.Controllers
 
         // POST api/<EventController>
         [HttpPost]
-        public ActionResult Post([FromBody] Event e)
+        public ActionResult Post(int Code,string Name, DateTime eventDate, int eventPrice, int eventProducerId)
         {
+            Event e = new Event() { EventCode=Code,EventName=Name,EventDate=eventDate,EventPrice=eventPrice,ProducerId=eventProducerId,EventTicketList=new List<Ticket>()};
             if (e == null)
             {
                 return BadRequest("Event data is missing.");
@@ -47,16 +48,16 @@ namespace GlaTicket.Api.Controllers
             var success= _eventService.AddEvent(e);
             if (success==-1)
             {
-                return NotFound($"Producer with ID {e.EventProducerId} not found.");
+                return NotFound($"Producer with ID {e.ProducerId} not found.");
             }
             return Ok($"Add {e} successfully.");
         }
 
         // PUT api/<EventController>/5
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] Event e)
+        public ActionResult Put(int id, int EventPrice, DateTime EventDate)
         {
-            var success = _eventService.ChangeEvent(id, e);
+            var success = _eventService.ChangeEvent(id, EventPrice, EventDate);
             if (success == -1)
             {
                 return NotFound($"Event with ID {id} not found.");

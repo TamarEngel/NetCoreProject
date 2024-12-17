@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GlaTicket.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241205205910_mig2")]
-    partial class mig2
+    [Migration("20241217224416_relationShips3")]
+    partial class relationShips3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -68,13 +68,15 @@ namespace GlaTicket.Data.Migrations
                     b.Property<int>("EventPrice")
                         .HasColumnType("int");
 
-                    b.Property<int>("EventProducerId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("EventStatus")
                         .HasColumnType("bit");
 
+                    b.Property<int>("ProducerId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProducerId");
 
                     b.ToTable("EventList");
                 });
@@ -117,7 +119,7 @@ namespace GlaTicket.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("EventCode")
+                    b.Property<int>("EventId")
                         .HasColumnType("int");
 
                     b.Property<string>("EventName")
@@ -126,7 +128,50 @@ namespace GlaTicket.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("EventId");
+
                     b.ToTable("TicketList");
+                });
+
+            modelBuilder.Entity("GlaTicket.Core.models.Event", b =>
+                {
+                    b.HasOne("GlaTicket.Core.models.Producer", null)
+                        .WithMany("ProducerEventList")
+                        .HasForeignKey("ProducerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("GlaTicket.Core.models.Ticket", b =>
+                {
+                    b.HasOne("GlaTicket.Core.models.Client", null)
+                        .WithMany("ClientTicketList")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GlaTicket.Core.models.Event", null)
+                        .WithMany("EventTicketList")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("GlaTicket.Core.models.Client", b =>
+                {
+                    b.Navigation("ClientTicketList");
+                });
+
+            modelBuilder.Entity("GlaTicket.Core.models.Event", b =>
+                {
+                    b.Navigation("EventTicketList");
+                });
+
+            modelBuilder.Entity("GlaTicket.Core.models.Producer", b =>
+                {
+                    b.Navigation("ProducerEventList");
                 });
 #pragma warning restore 612, 618
         }

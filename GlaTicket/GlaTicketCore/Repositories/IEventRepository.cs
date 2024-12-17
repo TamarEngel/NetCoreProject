@@ -12,7 +12,7 @@ namespace GlaTicket.Core.Repositories
         public List<Event> GetList();
         Event GetEventById(int id);
         int AddEvent(Event e);
-        public int ChangeEvent(int id, Event e);
+        public int ChangeEvent(int id, int EventPrice, DateTime EventDate);
         public int DeleteEvent(int id);
     }
 }

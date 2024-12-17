@@ -1,6 +1,7 @@
 ﻿using GlaTicket.Core.interfaces;
 using GlaTicket.Core.models;
 using GlaTicket.Core.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,15 +24,15 @@ namespace GlaTicket.Data.Repositories
         public void AddTicketAndClient(Ticket t)
         {
             // בדיקה אם האירוע קיים ברשימת האירועים
-            var existingEvent = _context.EventList.FirstOrDefault(c => c.EventCode == t.EventCode);
+            var existingEvent = _context.EventList.Include(p => p.EventTicketList).FirstOrDefault(c => c.EventCode == t.EventId);
             if (existingEvent == null)
                 return; // אם האירוע לא קיים, יוצאים מהפונקציה
-
+            existingEvent.EventTicketList.Add(t);//הוספת הכרטיס לרשימת הכרטיסים של הארוע הנוכחי
             // בדיקה אם הלקוח קיים ברשימת הלקוחות
-            var client = _context.clientList.FirstOrDefault(c => c.ClientId == t.ClientId);
+            var client = _context.clientList.Include(p => p.ClientTicketList).FirstOrDefault(c => c.ClientId == t.ClientId);
             if (client != null)//הוספת הכרטיס ללקוח קיים
             {
-                client.ClientTicketList.Add(t.EventCode);
+                client.ClientTicketList.Add(t);
             }
             else
             {
@@ -40,7 +41,7 @@ namespace GlaTicket.Data.Repositories
                     ClientId = t.ClientId,
                     ClientName = t.ClientName,
                     ClientStatus = true,
-                    ClientTicketList = new List<int> { t.EventCode }
+                    ClientTicketList = new List<Ticket> { t }
                 });
             }
             _context.TicketList.Add(t);

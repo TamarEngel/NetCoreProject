@@ -4,6 +4,7 @@ using GlaTicket.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GlaTicket.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241217204855_Relationships2")]
+    partial class Relationships2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,10 +68,13 @@ namespace GlaTicket.Data.Migrations
                     b.Property<int>("EventPrice")
                         .HasColumnType("int");
 
+                    b.Property<int>("EventProducerId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("EventStatus")
                         .HasColumnType("bit");
 
-                    b.Property<int>("ProducerId")
+                    b.Property<int?>("ProducerId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -117,7 +122,10 @@ namespace GlaTicket.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("EventId")
+                    b.Property<int>("EventCode")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EventId")
                         .HasColumnType("int");
 
                     b.Property<string>("EventName")
@@ -137,9 +145,7 @@ namespace GlaTicket.Data.Migrations
                 {
                     b.HasOne("GlaTicket.Core.models.Producer", null)
                         .WithMany("ProducerEventList")
-                        .HasForeignKey("ProducerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProducerId");
                 });
 
             modelBuilder.Entity("GlaTicket.Core.models.Ticket", b =>
@@ -152,9 +158,7 @@ namespace GlaTicket.Data.Migrations
 
                     b.HasOne("GlaTicket.Core.models.Event", null)
                         .WithMany("EventTicketList")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EventId");
                 });
 
             modelBuilder.Entity("GlaTicket.Core.models.Client", b =>
