@@ -21,11 +21,11 @@ namespace GlaTicket.Data.Repositories
 
         public List<Event> GetList()
         {
-            return _context.EventList.ToList();
+            return _context.EventList.Include(e => e.EventTicketList).ToList();
         }
         public Event GetEventById(int id)
         {
-            return _context.EventList.FirstOrDefault(e => e.EventCode == id && e.EventStatus == true);
+            return _context.EventList.Include(e => e.EventTicketList).FirstOrDefault(e => e.EventCode == id && e.EventStatus == true);
         }
         public int AddEvent(Event e)
         {

@@ -1,11 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace GlaTicket.Core.models
+namespace GlaTicket.Core.DTO
 {
-    public class Ticket
+    public class TicketPostDTO
     {
-        [Key]
-        public int Id { get; set; }
         public string ClientName { get; set; }
         public int ClientId { get; set; }
         public int EventId { get; set; }

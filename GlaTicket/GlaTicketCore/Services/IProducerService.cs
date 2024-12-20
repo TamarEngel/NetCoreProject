@@ -1,4 +1,5 @@
-﻿using GlaTicket.Core.models;
+﻿using GlaTicket.Core.DTO;
+using GlaTicket.Core.models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace GlaTicket.Core.Services
 {
     public interface IProducerService
     {
-        List<Producer> GetList();
-        Producer GetProducerById(int id);
+        List<ProducerGetDTO> GetList();
+        ProducerGetDTO GetProducerById(int id);
         void AddProducer(int producerId, string producerName);
         int DeleteProducer(int id);
     }

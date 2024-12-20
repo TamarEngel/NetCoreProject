@@ -5,6 +5,7 @@ using GlaTicket.Service;
 using GlaTicket.Core.Repositories;
 using GlaTicket.Data.Repositories;
 using GlaTicket.Core.Services;
+using GlaTicket.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,8 @@ builder.Services.AddScoped<IProducerRepository, ProducerRepository>();
 builder.Services.AddScoped<ITicketService, TicketService>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddDbContext<DataContext>();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

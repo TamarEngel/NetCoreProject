@@ -15,15 +15,7 @@ namespace GlaTicket.Core.models
         //public Producer EventProducer { get; set; }
         public List<Ticket> EventTicketList { get; set; } = new List<Ticket>();
 
-        //public Event(int Code, string Name, DateTime EventDate, int EventPrice, int EventProducerId)
-        //{
-        //    EventCode= Code;
-        //    EventName= Name;
-        //    this.EventPrice = EventPrice;
-        //    this.EventProducerId = EventProducerId;
-        //    this.EventStatus = true;
-        //    this.EventDate = EventDate;
-        //}
+     
         
 
     }

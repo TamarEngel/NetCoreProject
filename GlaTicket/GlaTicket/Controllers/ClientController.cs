@@ -2,6 +2,7 @@
 using GlaTicket.Core.models;
 using GlaTicket.Core.interfaces;
 using Microsoft.AspNetCore.Mvc;
+using GlaTicket.Core.DTO;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,14 +19,14 @@ namespace GlaTicket.Api.Controllers
         }
         // GET: api/<ClientController>
         [HttpGet]
-        public ActionResult <IEnumerable<Client>> Get()
+        public ActionResult <IEnumerable<ClientGetDTO>> Get()
         {
             return Ok(_clientService.GetList());
         }
 
         // GET api/<ClientController>/5
         [HttpGet("{id}")]
-        public ActionResult<Client> Get(int id)
+        public ActionResult<ClientGetDTO> Get(int id)
         {
             var client =_clientService.GetClientById(id);
             if (client == null)

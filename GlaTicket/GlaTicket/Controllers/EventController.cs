@@ -3,6 +3,7 @@ using GlaTicket.Core.interfaces;
 using Microsoft.AspNetCore.Mvc;
 using GlaTicket.Service;
 using GlaTicket.Core.Services;
+using GlaTicket.Core.DTO;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,14 +20,14 @@ namespace GlaTicket.Api.Controllers
         }
         // GET: api/<EventController>
         [HttpGet]
-        public ActionResult<IEnumerable<Event>> Get()
+        public ActionResult<IEnumerable<EventGetDTO>> Get()
         {
             return Ok(_eventService.GetAll());
         }
 
         // GET api/<EventController>/5
         [HttpGet("{id}")]
-        public ActionResult<Event> Get(int id)
+        public ActionResult<EventGetDTO> Get(int id)
         {
             var eventItem = _eventService.GetEventById(id);
             if (eventItem == null)
@@ -38,9 +39,8 @@ namespace GlaTicket.Api.Controllers
 
         // POST api/<EventController>
         [HttpPost]
-        public ActionResult Post(int Code,string Name, DateTime eventDate, int eventPrice, int eventProducerId)
+        public ActionResult Post(EventPostDTO e)
         {
-            Event e = new Event() { EventCode=Code,EventName=Name,EventDate=eventDate,EventPrice=eventPrice,ProducerId=eventProducerId,EventTicketList=new List<Ticket>()};
             if (e == null)
             {
                 return BadRequest("Event data is missing.");

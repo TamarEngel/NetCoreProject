@@ -1,4 +1,6 @@
-﻿using GlaTicket.Core.models;
+﻿using AutoMapper;
+using GlaTicket.Core.DTO;
+using GlaTicket.Core.models;
 using GlaTicket.Core.Repositories;
 using GlaTicket.Core.Services;
 using System;
@@ -12,21 +14,31 @@ namespace GlaTicket.Service
     public class EventService : IEventService
     {
         private readonly IEventRepository _eventRepository;
-        public EventService(IEventRepository eventRepository)
+
+        private readonly IMapper _mapper;
+        public EventService(IEventRepository eventRepository, IMapper mapper)
         {
             _eventRepository = eventRepository;
+            _mapper = mapper;
         }
-        public List<Event> GetAll()
+        public List<EventGetDTO> GetAll()
         {
-            return _eventRepository.GetList();
+            var list = _eventRepository.GetList();
+            var listDto = new List<EventGetDTO>();
+            foreach (var event1 in list)
+            {
+                listDto.Add(_mapper.Map<EventGetDTO>(event1));
+            }
+            return listDto;
         }
-        public Event GetEventById(int id)
+        public EventGetDTO GetEventById(int id)
         {
-            return _eventRepository.GetEventById(id);
+            return _mapper.Map<EventGetDTO>(_eventRepository.GetEventById(id));
         }
-        public int AddEvent(Event e)
+        public int AddEvent(EventPostDTO e)
         {
-            return _eventRepository.AddEvent(e);
+            var eventDto = _mapper.Map<Event>(e);
+            return _eventRepository.AddEvent(eventDto);
         }
         public int ChangeEvent(int id, int EventPrice, DateTime EventDate)
         {

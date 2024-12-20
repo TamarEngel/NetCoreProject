@@ -3,6 +3,7 @@ using GlaTicket.Core.interfaces;
 using Microsoft.AspNetCore.Mvc;
 using GlaTicket.Core.Services;
 using Microsoft.EntityFrameworkCore;
+using GlaTicket.Core.DTO;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,7 +20,7 @@ namespace GlaTicket.Api.Controllers
         }
        
         [HttpPost]
-        public void Post([FromBody] Ticket t)
+        public void Post(TicketPostDTO t)
         {
             _ticketService.AddTicketAndClient(t);
         }

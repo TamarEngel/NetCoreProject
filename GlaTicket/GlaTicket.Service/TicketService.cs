@@ -1,4 +1,6 @@
-﻿using GlaTicket.Core.models;
+﻿using AutoMapper;
+using GlaTicket.Core.DTO;
+using GlaTicket.Core.models;
 using GlaTicket.Core.Repositories;
 using GlaTicket.Core.Services;
 using System;
@@ -12,17 +14,25 @@ namespace GlaTicket.Service
     public class TicketService:ITicketService
     {
         private readonly ITicketRepository _ticketRepository;
-        public TicketService(ITicketRepository ticketRepository)
+        private readonly IMapper _mapper;
+        public TicketService(ITicketRepository ticketRepository, IMapper mapper)
         {
             _ticketRepository = ticketRepository;
+            _mapper = mapper;
         }
-        public void AddTicketAndClient(Ticket t)
+        public void AddTicketAndClient(TicketPostDTO t)
         {
-            _ticketRepository.AddTicketAndClient(t);
+            _ticketRepository.AddTicketAndClient(_mapper.Map<Ticket>(t));
         }
-        public List<Ticket> GetList()
+        public List<TicketGetDTO> GetList()
         {
-            return _ticketRepository.GetList();
+            var list = _ticketRepository.GetList();
+            var listDto = new List<TicketGetDTO>();
+            foreach (var t in list)
+            {
+                listDto.Add(_mapper.Map<TicketGetDTO>(t));
+            }
+            return listDto;
         }
     }
 }

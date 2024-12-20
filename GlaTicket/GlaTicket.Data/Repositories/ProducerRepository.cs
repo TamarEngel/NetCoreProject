@@ -1,6 +1,7 @@
 ﻿using GlaTicket.Core.interfaces;
 using GlaTicket.Core.models;
 using GlaTicket.Core.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +19,11 @@ namespace GlaTicket.Data.Repositories
         }
         public List<Producer> GetList()
         {
-            return _context.ProducerList.ToList();
+            return _context.ProducerList.Include(p => p.ProducerEventList).ToList();
         }
         public Producer GetProducerById(int id)
         {
-            return _context.ProducerList.FirstOrDefault(p => p.ProducerId == id && p.ProducerStatus == true);
+            return _context.ProducerList.Include(p => p.ProducerEventList).FirstOrDefault(p => p.ProducerId == id && p.ProducerStatus == true);
         }
         public void AddProducer(int producerId, string producerName)
         {

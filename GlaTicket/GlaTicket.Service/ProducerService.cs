@@ -1,4 +1,6 @@
-﻿using GlaTicket.Core.models;
+﻿using AutoMapper;
+using GlaTicket.Core.DTO;
+using GlaTicket.Core.models;
 using GlaTicket.Core.Repositories;
 using GlaTicket.Core.Services;
 using System;
@@ -12,17 +14,25 @@ namespace GlaTicket.Service
     public class ProducerService:IProducerService
     {
         private readonly IProducerRepository _producerRepository;
-        public ProducerService(IProducerRepository producerRepository)
+        private readonly IMapper _mapper;
+        public ProducerService(IProducerRepository producerRepository, IMapper mapper)
         {
             _producerRepository = producerRepository;
+            _mapper = mapper;
         }
-        public List<Producer> GetList()
+        public List<ProducerGetDTO> GetList()
         {
-            return _producerRepository.GetList();
+            var list = _producerRepository.GetList(); ;
+            var listDto = new List<ProducerGetDTO>();
+            foreach (var producer in list)
+            {
+                listDto.Add(_mapper.Map<ProducerGetDTO>(producer));
+            }
+            return listDto;
         }
-        public Producer GetProducerById(int id)
+        public ProducerGetDTO GetProducerById(int id)
         {
-            return _producerRepository.GetProducerById(id);
+            return _mapper.Map<ProducerGetDTO>(_producerRepository.GetProducerById(id));
         }
         public void AddProducer(int producerId, string producerName)
         {

@@ -21,11 +21,11 @@ namespace GlaTicket.Data.Repositories
         }
         public List<Client> GetList()
         {
-            return _context.clientList.ToList();
+            return _context.clientList.Include(p => p.ClientTicketList).ToList();
         }
         public Client GetClientById(int id)
         {
-            return _context.clientList.FirstOrDefault(c => c.ClientId == id && c.ClientStatus == true);
+            return _context.clientList.Include(p => p.ClientTicketList).FirstOrDefault(c => c.ClientId == id && c.ClientStatus == true);
         }
         public int AddClient(int id, string name)
         {
