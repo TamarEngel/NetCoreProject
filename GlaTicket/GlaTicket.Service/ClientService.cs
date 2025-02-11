@@ -20,9 +20,9 @@ namespace GlaTicket.Service
             _clientRepository = clientRepository;
             _mapper = mapper;
         }
-        public List<ClientGetDTO> GetList()
+        public async Task<List<ClientGetDTO>> GetAllClientAsync()
         {
-            var list = _clientRepository.GetList();
+            var list = await _clientRepository.GetAllClientAsync();
             var listDto = new List<ClientGetDTO>();
             foreach(var client in list)
             {
@@ -30,21 +30,21 @@ namespace GlaTicket.Service
             }
             return listDto;
         }
-        public ClientGetDTO GetClientById(int id)
+        public async Task<ClientGetDTO> GetClientByIdAsync(int id)
         {
-            return _mapper.Map<ClientGetDTO>(_clientRepository.GetClientById(id));
+            return _mapper.Map<ClientGetDTO>(await _clientRepository.GetClientByIdAsync(id));
         }
-        public int AddClient(int id, string name)
+        public async Task<int> AddClientAsync(int id, string name)
         {
-            return _clientRepository.AddClient(id,name);
+            return await _clientRepository.AddClientAsync(id,name);
         }
-        public int ChangeClient(int id, int eventCode)
+        public async Task<int> ChangeClientAsync(int id, int eventCode)
         {
-            return _clientRepository.ChangeClient(id, eventCode);
+            return await _clientRepository.ChangeClientAsync(id, eventCode);
         }
-        public int DeleteClient(int id)
+        public async Task<int> DeleteClientAsync(int id)
         {
-            return (_clientRepository.DeleteClient(id));
+            return (await _clientRepository.DeleteClientAsync(id));
         }
     }
 }

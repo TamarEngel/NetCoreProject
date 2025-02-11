@@ -19,29 +19,29 @@ namespace GlaTicket.Data.Repositories
         {
             _context = context;
         }
-        public List<Client> GetList()
+        public async Task<List<Client>> GetAllClientAsync()
         {
-            return _context.clientList.Include(p => p.ClientTicketList).ToList();
+            return await _context.clientList.Include(p => p.ClientTicketList).ToListAsync();
         }
-        public Client GetClientById(int id)
+        public async Task<Client> GetClientByIdAsync(int id)
         {
-            return _context.clientList.Include(p => p.ClientTicketList).FirstOrDefault(c => c.ClientId == id && c.ClientStatus == true);
+            return await _context.clientList.Include(p => p.ClientTicketList).FirstOrDefaultAsync(c => c.ClientId == id && c.ClientStatus == true);
         }
-        public int AddClient(int id, string name)
+        public async Task<int> AddClientAsync(int id, string name)
         {
-            if (_context.clientList.Any(c => c.ClientId ==id))
+            if (await _context.clientList.AnyAsync(c => c.ClientId ==id))
                 return -1;
             _context.clientList.Add(new Client() { ClientId = id, ClientName = name, ClientTicketList = new List<Ticket>(), ClientStatus = true });
             _context.SaveChanges();
             return 1;
         }
 
-        public int ChangeClient(int id,int eventCode)
+        public async Task<int>ChangeClientAsync(int id,int eventCode)
         {
             //אפשרות לבטל הזמנה/כרטיס
-            var client = _context.clientList.Include(p => p.ClientTicketList).FirstOrDefault(c => c.ClientId == id);
-            var ticketEvent = _context.TicketList.FirstOrDefault(t => t.EventId == eventCode);
-            var event1 = _context.EventList.Include(p => p.EventTicketList).FirstOrDefault(e => e.EventCode == eventCode);
+            var client = await _context.clientList.Include(p => p.ClientTicketList).FirstOrDefaultAsync(c => c.ClientId == id);
+            var ticketEvent = await _context.TicketList.FirstOrDefaultAsync(t => t.EventId == eventCode);
+            var event1 = await _context.EventList.Include(p => p.EventTicketList).FirstOrDefaultAsync(e => e.EventCode == eventCode);
             if (client == null)
                 return -1;
             if (client.ClientTicketList.Contains(ticketEvent))
@@ -53,9 +53,9 @@ namespace GlaTicket.Data.Repositories
             }
             return 0;
         }
-        public int DeleteClient(int id)
+        public async Task<int> DeleteClientAsync(int id)
         {
-            var client = _context.clientList.FirstOrDefault(c => c.ClientId == id);
+            var client = await _context.clientList.FirstOrDefaultAsync(c => c.ClientId == id);
             if (client == null)
                 return -1;
             client.ClientStatus = false;

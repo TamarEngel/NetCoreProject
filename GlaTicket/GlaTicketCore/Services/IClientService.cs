@@ -10,10 +10,12 @@ namespace GlaTicket.Core.Services
 {
     public interface IClientService
     {
-        List<ClientGetDTO> GetList();
-        ClientGetDTO GetClientById(int id);
-        int AddClient(int id, string name);
-        int ChangeClient(int id, int eventCode);
-        int DeleteClient(int id);
+        Task<List<ClientGetDTO>> GetAllClientAsync();
+        Task<ClientGetDTO> GetClientByIdAsync(int id);
+        Task<int> AddClientAsync(int id, string name);
+        Task<int> ChangeClientAsync(int id, int eventCode);
+        Task<int> DeleteClientAsync(int id);
     }
 }
+
+

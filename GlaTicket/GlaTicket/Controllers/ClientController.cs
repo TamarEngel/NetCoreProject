@@ -19,16 +19,19 @@ namespace GlaTicket.Api.Controllers
         }
         // GET: api/<ClientController>
         [HttpGet]
-        public ActionResult <IEnumerable<ClientGetDTO>> Get()
+        public async Task<ActionResult <IEnumerable<ClientGetDTO>>> GetAllClientAsync()
         {
-            return Ok(_clientService.GetList());
+            var list = await _clientService.GetAllClientAsync();
+            if (list is null)
+                return NotFound("empty list");
+            return Ok(list);
         }
 
         // GET api/<ClientController>/5
         [HttpGet("{id}")]
-        public ActionResult<ClientGetDTO> Get(int id)
+        public async Task<ActionResult<ClientGetDTO>> GetClientByIdAsync(int id)
         {
-            var client =_clientService.GetClientById(id);
+            var client =await _clientService.GetClientByIdAsync(id);
             if (client == null)
             {
                 return NotFound($"Client with ID {id} not found or inactive.");
@@ -36,12 +39,11 @@ namespace GlaTicket.Api.Controllers
             return Ok(client);
         }
 
-
         // POST api/<ClientController>
         [HttpPost]
-        public ActionResult Post(int id, string name)
+        public async Task<ActionResult> Post(int id, string name)
         {
-            if (_clientService.AddClient(id,name) ==-1)
+            if (await _clientService.AddClientAsync(id,name) ==-1)
             {
                 return BadRequest("Invalid client data or client already exists.");
             }
@@ -51,10 +53,10 @@ namespace GlaTicket.Api.Controllers
 
     // PUT api/<ClientController>/53
     [HttpPut("{id}")]
-        public ActionResult Put(int id,int eventCode)
+        public async Task<ActionResult> ChangeClientAsync(int id,int eventCode)
         {
             //אפשרות לבטל הזמנה
-            var success = _clientService.ChangeClient(id, eventCode);
+            var success = await _clientService.ChangeClientAsync(id, eventCode);
             if (success == -1)
                 return NotFound($"Client with ID {id} not found.");
             else if (success == 0)
@@ -66,9 +68,9 @@ namespace GlaTicket.Api.Controllers
 
         // DELETE api/<ClientController>/5
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> DeleteClientAsync(int id)
         {
-            var success = _clientService.DeleteClient(id);
+            var success = await _clientService.DeleteClientAsync(id);
             if (success == -1)
             {
                 return NotFound($"Client with ID {id} not found.");
